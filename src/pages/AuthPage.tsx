@@ -170,7 +170,7 @@ export function AuthPage({ initialMode }: AuthPageProps) {
                 </div>
                 <div className="auth-overlay__stat">
                   <Sparkles className="auth-overlay__stat-icon" />
-                  <span>Role Dashboards</span>
+                  <span>Turn effort into results</span>
                 </div>
               </div>
             </div>
