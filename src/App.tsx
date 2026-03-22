@@ -1,74 +1,75 @@
-import React from 'react';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import LoginForm from './components/auth/LoginForm';
-import PasswordChangeModal from './components/auth/PasswordChangeModal';
-import AdminDashboard from './components/admin/AdminDashboard';
-import TeacherDashboard from './components/teacher/TeacherDashboard';
-import StudentDashboard from './components/student/StudentDashboard';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+import { useEffect } from "react"
+import { useStore } from "./store/useStore"
 
-const AppContent: React.FC = () => {
-  const { user, isAuthenticated, isLoading } = useAuth();
+import { DashboardLayout } from "./components/layout/DashboardLayout"
+import { RoleGuard } from "./components/RoleGuard"
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return <LoginForm />;
-  }
-
-  // Show password change modal if required
-  if (user?.mustChangePassword) {
-    return (
-      <>
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Welcome to StudyQ</h2>
-            <p className="text-gray-600">Please change your password to continue</p>
-          </div>
-        </div>
-        <PasswordChangeModal
-          isOpen={true}
-          onClose={() => {}}
-          isForced={true}
-        />
-      </>
-    );
-  }
-
-  // Route to appropriate dashboard based on user role
-  switch (user?.role) {
-    case 'admin':
-      return <AdminDashboard />;
-    case 'teacher':
-      return <TeacherDashboard />;
-    case 'student':
-      return <StudentDashboard />;
-    default:
-      return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h2>
-            <p className="text-gray-600">Invalid user role</p>
-          </div>
-        </div>
-      );
-  }
-};
+import { Landing } from "./pages/Landing"
+import { AuthPage } from "./pages/AuthPage"
+import { Dashboard } from "./pages/Dashboard"
+import { Materials } from "./pages/Materials"
+import { Upload } from "./pages/Upload"
+import { Analytics } from "./pages/Analytics"
+import { AdminPanel } from "./pages/AdminPanel"
 
 function App() {
+  const isAuthenticated = useStore((s) => s.isAuthenticated)
+  const authLoading = useStore((s) => s.authLoading)
+  const theme = useStore((s) => s.theme)
+  const initAuth = useStore((s) => s.initAuth)
+
+  // Try silent refresh on mount (uses HTTP-only cookie)
+  useEffect(() => {
+    initAuth()
+  }, [initAuth])
+
+  // Apply theme class on mount and whenever it changes
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark")
+  }, [theme])
+
+  // Show loading while checking auth
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+          <p className="text-sm text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
-  );
+    <Router>
+      <Routes>
+        {/* Public */}
+        <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Landing />} />
+        <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" /> : <AuthPage initialMode="signin" />} />
+        <Route path="/register" element={isAuthenticated ? <Navigate to="/dashboard" /> : <AuthPage initialMode="signup" />} />
+
+        {/* Protected */}
+        <Route element={isAuthenticated ? <DashboardLayout /> : <Navigate to="/login" />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/materials" element={<Materials />} />
+          <Route path="/upload" element={
+            <RoleGuard allowedRoles={['teacher', 'admin']}>
+              <Upload />
+            </RoleGuard>
+          } />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/admin" element={
+            <RoleGuard allowedRoles={['admin']}>
+              <AdminPanel />
+            </RoleGuard>
+          } />
+        </Route>
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
+  )
 }
 
-export default App;
+export default App
