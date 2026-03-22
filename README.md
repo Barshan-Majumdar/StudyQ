@@ -4,9 +4,7 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:1e3a8a,50:3b82f6,100:818cf8&height=220&section=header&text=📚%20StudyQ&fontSize=80&fontColor=ffffff&fontAlignY=35&desc=Smart%20Study%20Material%20Platform&descSize=22&descColor=e0e7ff&descAlignY=55&animation=fadeIn" width="100%" />
 
 <!-- Typing Animation -->
-<a href="https://github.com/soumyadip9mondal/StudyQ">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=4000&pause=1000&color=3B82F6&center=true&vCenter=true&multiline=true&repeat=true&width=600&height=80&lines=Distribute+Study+Materials+Seamlessly+📖;Role-Based+Access+for+Admins%2C+Teachers+%26+Students+🔐;Built+with+React+%2B+Express+%2B+MongoDB+🚀" alt="Typing SVG" />
-</a>
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=4000&pause=1000&color=3B82F6&center=true&vCenter=true&multiline=true&repeat=true&width=600&height=80&lines=Distribute+Study+Materials+Seamlessly+📖;Role-Based+Access+for+Admins%2C+Teachers+%26+Students+🔐;Built+with+React+%2B+Express+%2B+MongoDB+🚀)](https://github.com/soumyadip9mondal/StudyQ)
 
 <br/>
 
