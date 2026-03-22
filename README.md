@@ -2,7 +2,7 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=180&section=header&text=StudyQ&fontSize=42&fontColor=fff&animation=twinkling&fontAlignY=32&desc=📚%20Educational%20Platform%20%7C%20Turborepo%20Monorepo&descAlignY=52&descSize=16" width="100%" />
 
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=4000&pause=1000&color=3B82F6&center=true&vCenter=true&multiline=true&repeat=true&width=600&height=80&lines=Distribute+Study+Materials+Seamlessly+📖;Role-Based+Access+for+Admins%2C+Teachers+%26+Students+🔐;Built+with+React+%2B+Express+%2B+Prisma+🚀)](https://github.com/soumyadip9mondal/StudyQ)
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=4000&pause=1000&color=3B82F6&center=true&vCenter=true&multiline=true&repeat=true&width=600&height=80&lines=Distribute+Study+Materials+Seamlessly+📖;)](https://github.com/soumyadip9mondal/StudyQ)
 
 <p>
   <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
