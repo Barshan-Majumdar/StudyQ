@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  email           String   @unique
+  password        String
+  role            Role     @default(STUDENT)
+  isActive        Boolean  @default(true)
+  currentSemester Int?
+  academicYear    Int?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  materials Material[]
+  downloads Download[]
+  logs      ActivityLog[]
+}
+
+model Material {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  description   String?
+  subject       String
+  semester      Int?
+  academicYear  Int?
+  fileName      String?
+  fileUrl       String
+  storageKey    String
+  fileSize      Int?
+  fileType      String?
+  tags          String[]
+  downloadCount Int      @default(0)
+  isActive      Boolean  @default(true)
+  userId        String   @db.ObjectId
+  uploadedBy    User     @relation(fields: [userId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  downloads Download[]
+}
+
+model Download {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId
+  materialId String   @db.ObjectId
+  user       User     @relation(fields: [userId], references: [id])
+  material   Material @relation(fields: [materialId], references: [id])
+  createdAt  DateTime @default(now())
+}
+
+model ActivityLog {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String?  @db.ObjectId
+  user         User?    @relation(fields: [userId], references: [id])
+  action       String
+  target       String?
+  details      String?
+  performedBy  String?  @db.ObjectId
+  targetUserId String?  @db.ObjectId
+  ipAddress    String?
+  metadata     Json?
+  createdAt    DateTime @default(now())
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+  ADMIN
+}
