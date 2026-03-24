@@ -51,8 +51,8 @@ app.get('/api/health', (_req, res) => {
 // ── Start ──────────────────────────────────────────────────────
 async function start() {
   await connectDB();
-  app.listen(config.port, () => {
-    console.log(`🚀 StudyQ API running on http://localhost:${config.port}`);
+  app.listen(5000, () => {
+    console.log(`🚀 StudyQ API running on http://localhost:5000`);
   });
 }
 
